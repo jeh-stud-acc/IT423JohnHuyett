@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technical Evidence · IT423 John Huyett</title>
+  <meta name="description" content="Technical evidence from John Huyett: a 24-Mac lab rebuild, a Python duplicate-display script, and an automated AWS pipeline with Terraform, Ansible and InSpec.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a href="index.html" class="brand">IT423 <span>John Huyett</span></a>
+    <nav class="tabs" aria-label="Portfolio sections">
+      <a href="index.html">Home</a>
+      <a href="technical.html" class="active" aria-current="page">Technical Evidence</a>
+      <a href="professional.html">Professional Skills</a>
+      <a href="extracurricular.html">Extracurricular</a>
+      <a href="package.html">Portfolio Package</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Technical Evidence</p>
+    <h1>Three projects, explained from scratch</h1>
+    <p class="hero-sub">Each project below is evidence of skills listed in my portfolio: device management and macOS, scripting and Windows automation, and cloud automation with Terraform and Ansible. Each one explains where it happened, what the problem was, what I did and what changed.</p>
+  </div>
+</section>
+
+<main>
+  <div class="wrap">
+    <nav class="jump" aria-label="Projects on this page">
+      <a href="#mac-lab">Replacing a computer lab with 24 new Macs</a>
+      <a href="#display-fix">Fixing a classroom projector problem with a script</a>
+      <a href="#aws">Building a cloud server automatically</a>
+    </nav>
+  </div>
+
+  <section id="mac-lab" class="project">
+    <div class="wrap">
+      <span class="tag">Internship project · Marymount University IT department · Fall 2026 · Role: co-lead</span>
+      <h2>Replacing a university computer lab with 24 new Macs</h2>
+      <p class="summary">Marymount University has computer labs where students and staff can walk in and use a computer. One of those labs was still running old iMacs. As an intern in the university's IT department, I co-led a small team of interns that swapped the whole lab over to 24 new Macs, from setting them up to making sure the IT office could manage them remotely. About four interns contributed over six weeks, and another intern and I did most of the work.</p>
+
+      <div class="blocks">
+        <div class="block">
+          <h3>The situation</h3>
+          <p>Replacing a lab is more than plugging in new computers. Each Mac needs the right software, a standard name so IT can track it, and security settings so it can't be tampered with. The old iMacs also had to be wiped before they left, so no student or staff data went with them.</p>
+        </div>
+        <div class="block">
+          <h3>The result</h3>
+          <p>The lab is now running on new hardware, and the IT office can update and troubleshoot every machine from their desks instead of walking over to the lab.</p>
+        </div>
+      </div>
+
+      <h3 class="steps-title">What I did, step by step</h3>
+      <ol class="steps">
+        <li><span>1</span><h4>Set up</h4><p>Updated each new Mac, installed the software that had been requested for the lab, and wrote down the setup so it could be repeated.</p></li>
+        <li><span>2</span><h4>Track</h4><p>Named each Mac using the university's naming standard and recorded its serial number and network (MAC) address in IT's inventory database.</p></li>
+        <li><span>3</span><h4>Retire the old ones</h4><p>Removed the old iMacs and securely wiped their drives so no data left the building with them.</p></li>
+        <li><span>4</span><h4>Install</h4><p>Set the new Macs and their keyboards, mice and other equipment up in the lab, and locked them down physically.</p></li>
+        <li><span>5</span><h4>Make it manageable</h4><p>Fixed Screen Sharing (the tool IT uses to see and control a Mac remotely), which had broken after a change in Microsoft Intune, the system that manages university devices. Then recorded each Mac's network address so IT could reach it.</p></li>
+      </ol>
+
+      <p class="chips"><span>macOS</span><span>Microsoft Intune</span><span>Screen Sharing</span><span>Inventory tracking</span><span>Secure data wiping</span></p>
+      <!-- TODO: when the Mac lab write-up is published, add: <a class="link" href="URL">Read the full write-up →</a> -->
+    </div>
+  </section>
+
+  <section id="display-fix" class="project alt">
+    <div class="wrap">
+      <span class="tag">Internship project · Marymount University IT department · Fall 2026</span>
+      <h2>Fixing a classroom projector problem with a script</h2>
+      <p class="summary">Classrooms at the university have a Windows computer hooked up to both a monitor and a projector. The projector is supposed to mirror the monitor, so the class sees exactly what the instructor sees. On Windows this is called "Duplicate" mode, the option you get by pressing Win + P. In several classrooms that setting kept failing, so I wrote a small program that sets it automatically.</p>
+
+      <div class="blocks three">
+        <div class="block">
+          <h3>The problem</h3>
+          <p>On several classroom computers, Duplicate mode kept failing at login, which led to repeated complaints about the projector. Fixing it by hand in each room didn't stick, because the problem came back.</p>
+        </div>
+        <div class="block">
+          <h3>What I did</h3>
+          <p>I wrote a Python script that asks Windows directly for Duplicate mode, the same thing Win + P does. Projectors can take a few seconds to wake up after login, so it retries up to five times and writes each attempt to a log file IT can check later. I packaged it as a regular Windows program (.exe) and used Task Scheduler, a built-in Windows tool that runs programs automatically, to run it every time someone logs in.</p>
+        </div>
+        <div class="block">
+          <h3>The result</h3>
+          <p>The classroom computers now set the projector to mirror the screen on their own at every login, fixing a recurring problem across multiple classrooms.</p>
+        </div>
+      </div>
+
+      <h3 class="steps-title">The core of the script</h3>
+      <p class="code-note">This function makes the one Windows call that switches the display. The rest of the script handles retries, error messages and logging.</p>
+<pre class="code"><code><span class="kw">def</span> <span class="fn">set_duplicate_mode</span>() -&gt; int:
+    <span class="cm">"""Ask Windows to apply the clone/duplicate topology."""</span>
+    user32 = ctypes.WinDLL(<span class="st">"user32"</span>, use_last_error=<span class="kw">True</span>)
+    set_display_config = user32.SetDisplayConfig
+    set_display_config.argtypes = [
+        ctypes.c_uint32, ctypes.c_void_p, ctypes.c_uint32,
+        ctypes.c_void_p, ctypes.c_uint32,
+    ]
+    set_display_config.restype = ctypes.c_long
+
+    <span class="cm"># Win32 equivalent of DisplaySwitch.exe /clone</span>
+    flags = SDC_APPLY | SDC_TOPOLOGY_CLONE
+    <span class="kw">return</span> int(set_display_config(<span class="nu">0</span>, <span class="kw">None</span>, <span class="nu">0</span>, <span class="kw">None</span>, flags))</code></pre>
+
+      <p class="chips"><span>Python</span><span>Windows API</span><span>Task Scheduler</span><span>Logging</span><span>Classroom A/V</span></p>
+      <a class="link" href="https://github.com/jeh-stud-acc/IT423JohnHuyett/blob/main/duplicate-display/set_duplicate_display.py" target="_blank" rel="noopener">View the full script →</a>
+    </div>
+  </section>
+
+  <section id="aws" class="project">
+    <div class="wrap">
+      <span class="tag">Class project · IT 351 · Marymount University · Fall 2026</span>
+      <h2>Building, checking and tearing down a cloud server automatically</h2>
+      <p class="summary">Companies increasingly rent servers from cloud providers like Amazon Web Services (AWS) instead of buying their own. Setting those servers up by hand is slow and easy to get wrong, so IT teams write code that does it for them, and use a "pipeline" that runs that code step by step. For a class project, I built a pipeline that creates a web server on AWS, sets it up, checks that it meets the rules, and deletes it when it's no longer needed.</p>
+
+      <div class="blocks three">
+        <div class="block">
+          <h3>The goal</h3>
+          <p>Go from nothing to a running, configured web server on AWS without clicking through any settings by hand, so the whole setup can be rebuilt exactly the same way any time.</p>
+        </div>
+        <div class="block">
+          <h3>What I used</h3>
+          <p><strong>Terraform</strong> creates cloud resources from a written description. <strong>Ansible</strong> logs into a server and sets it up from a list of instructions. <strong>InSpec</strong> automatically checks that the setup follows the rules. <strong>GitLab CI</strong> runs all of them in order.</p>
+        </div>
+        <div class="block">
+          <h3>Why it matters</h3>
+          <p>This approach, known as "infrastructure as code," is how many IT teams manage servers today: every change is written down, repeatable and can be reviewed before it happens.</p>
+        </div>
+      </div>
+
+      <h3 class="steps-title">How the pipeline runs</h3>
+      <ol class="steps six">
+        <li><span>1</span><h4>Validate</h4><p>Checks the infrastructure code for mistakes.</p></li>
+        <li><span>2</span><h4>Plan</h4><p>Shows exactly what will be created before anything changes.</p></li>
+        <li><span>3</span><h4>Build</h4><p>After a person approves, Terraform creates the server, its two disks and its firewall rules on AWS.</p></li>
+        <li><span>4</span><h4>Configure</h4><p>Ansible installs and starts the Apache web server and publishes a web page.</p></li>
+        <li><span>5</span><h4>Check</h4><p>InSpec confirms the server exists, is running, uses the approved Linux image and is tagged correctly.</p></li>
+        <li><span>6</span><h4>Tear down</h4><p>After approval, Terraform deletes everything so nothing keeps running and costing money.</p></li>
+      </ol>
+      <p class="code-note" style="margin-top:20px">Security was part of the design: the server only accepts remote logins from the pipeline itself, not the whole internet, and no passwords or keys are stored in the code.</p>
+
+      <p class="chips"><span>AWS EC2</span><span>Terraform</span><span>Ansible</span><span>Chef InSpec</span><span>GitLab CI/CD</span><span>Linux</span><span>Apache</span></p>
+      <a class="link" href="https://github.com/jeh-stud-acc/aws-terraform-ansible-pipeline" target="_blank" rel="noopener">See the code on GitHub →</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span>© 2026 John Huyett · IT 423 Electronic Portfolio · Marymount University</span>
+    <span><a href="mailto:jeh97937@marymount.edu">Email</a> · <a href="https://www.linkedin.com/in/johnehuyett/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/jeh-stud-acc" target="_blank" rel="noopener">GitHub</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
